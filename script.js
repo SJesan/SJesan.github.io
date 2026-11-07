@@ -180,6 +180,179 @@ if (typingText) {
       }
     }
 
+    const hero = document.querySelector('.hero');
+    const particleCanvas = hero?.querySelector('.particle-canvas');
+    const particleContext = particleCanvas?.getContext('2d');
+
+    if (hero && particleCanvas && particleContext) {
+      const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const pointer = { x: null, y: null };
+      let particles = [];
+      let width = 0;
+      let height = 0;
+      let pixelRatio = 1;
+      let animationFrame = 0;
+      let heroIsVisible = false;
+      let slowMobileFrames = 0;
+      let previousFrameTime = 0;
+      const mobileQuery = window.matchMedia('(max-width: 640px)');
+
+      const getAccentRgb = () => {
+        const accent = getComputedStyle(document.body).getPropertyValue('--accent').trim();
+        const hex = accent.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+        if (hex) {
+          const value = hex[1].length === 3
+            ? hex[1].split('').map((digit) => digit + digit).join('')
+            : hex[1];
+          return [
+            Number.parseInt(value.slice(0, 2), 16),
+            Number.parseInt(value.slice(2, 4), 16),
+            Number.parseInt(value.slice(4, 6), 16),
+          ];
+        }
+
+        const rgb = accent.match(/[\d.]+/g);
+        return rgb ? rgb.slice(0, 3).map(Number) : [28, 122, 227];
+      };
+
+      const createParticles = () => {
+        const count = mobileQuery.matches ? 25 : 60;
+        particles = Array.from({ length: count }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.28,
+          vy: (Math.random() - 0.5) * 0.28,
+        }));
+      };
+
+      const resizeCanvas = () => {
+        const bounds = hero.getBoundingClientRect();
+        width = bounds.width;
+        height = bounds.height;
+        pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        particleCanvas.width = Math.round(width * pixelRatio);
+        particleCanvas.height = Math.round(height * pixelRatio);
+        particleContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        createParticles();
+        drawParticles(false);
+      };
+
+      const drawParticles = (moveParticles) => {
+        const [red, green, blue] = getAccentRgb();
+        const maxDistance = mobileQuery.matches ? 86 : 118;
+        const skipLines = mobileQuery.matches && slowMobileFrames > 8;
+
+        particleContext.clearRect(0, 0, width, height);
+
+        particles.forEach((particle, index) => {
+          if (moveParticles) {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+
+            if (particle.x < 0 || particle.x > width) particle.vx *= -1;
+            if (particle.y < 0 || particle.y > height) particle.vy *= -1;
+
+            if (pointer.x !== null && pointer.y !== null) {
+              const dx = particle.x - pointer.x;
+              const dy = particle.y - pointer.y;
+              const distance = Math.hypot(dx, dy);
+              if (distance > 0 && distance < 110) {
+                const force = (110 - distance) / 110 * 0.002;
+                particle.vx += dx / distance * force;
+                particle.vy += dy / distance * force;
+              }
+            }
+
+            particle.vx *= 0.999;
+            particle.vy *= 0.999;
+          }
+
+          if (!skipLines) {
+            for (let otherIndex = index + 1; otherIndex < particles.length; otherIndex += 1) {
+              const other = particles[otherIndex];
+              const distance = Math.hypot(particle.x - other.x, particle.y - other.y);
+              if (distance < maxDistance) {
+                const opacity = (1 - distance / maxDistance) * 0.13;
+                particleContext.strokeStyle = `rgba(${red}, ${green}, ${blue}, ${opacity})`;
+                particleContext.lineWidth = 0.7;
+                particleContext.beginPath();
+                particleContext.moveTo(particle.x, particle.y);
+                particleContext.lineTo(other.x, other.y);
+                particleContext.stroke();
+              }
+            }
+          }
+
+          particleContext.fillStyle = `rgba(${red}, ${green}, ${blue}, 0.32)`;
+          particleContext.beginPath();
+          particleContext.arc(particle.x, particle.y, 1.7, 0, Math.PI * 2);
+          particleContext.fill();
+        });
+      };
+
+      const stopAnimation = () => {
+        if (animationFrame) {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = 0;
+        }
+        previousFrameTime = 0;
+      };
+
+      const animate = (time) => {
+        animationFrame = 0;
+        if (!heroIsVisible || document.hidden || reducedMotionQuery.matches) return;
+
+        if (previousFrameTime && mobileQuery.matches) {
+          const frameDuration = time - previousFrameTime;
+          if (frameDuration > 28) {
+            slowMobileFrames = Math.min(slowMobileFrames + 1, 20);
+          } else {
+            slowMobileFrames = Math.max(slowMobileFrames - 1, 0);
+          }
+        }
+        previousFrameTime = time;
+        drawParticles(true);
+        animationFrame = requestAnimationFrame(animate);
+      };
+
+      const updateAnimation = () => {
+        stopAnimation();
+        if (reducedMotionQuery.matches) {
+          drawParticles(false);
+        } else if (heroIsVisible && !document.hidden) {
+          animationFrame = requestAnimationFrame(animate);
+        }
+      };
+
+      hero.addEventListener('pointermove', (event) => {
+        const bounds = hero.getBoundingClientRect();
+        pointer.x = event.clientX - bounds.left;
+        pointer.y = event.clientY - bounds.top;
+      });
+      hero.addEventListener('pointerleave', () => {
+        pointer.x = null;
+        pointer.y = null;
+      });
+
+      document.addEventListener('visibilitychange', updateAnimation);
+      window.addEventListener('resize', resizeCanvas);
+      mobileQuery.addEventListener('change', resizeCanvas);
+      reducedMotionQuery.addEventListener('change', updateAnimation);
+
+      const heroObserver = new IntersectionObserver(([entry]) => {
+        heroIsVisible = entry.isIntersecting;
+        updateAnimation();
+      });
+      heroObserver.observe(hero);
+
+      const themeObserver = new MutationObserver(() => {
+        drawParticles(!reducedMotionQuery.matches && heroIsVisible && !document.hidden);
+      });
+      themeObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+      resizeCanvas();
+    }
+
     const delay = deleting ? 42 : 90;
     window.setTimeout(typeLoop, delay);
   };

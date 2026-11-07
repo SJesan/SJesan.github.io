@@ -177,7 +177,23 @@ body.dark .site-header.scrolled {
   padding-bottom: 4rem;
 }
 
+.particle-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.hero .floating-orb {
+  z-index: 1;
+  opacity: 0.06;
+}
+
 .hero-grid {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1.3fr 0.7fr;
   gap: 2.5rem;
@@ -435,6 +451,43 @@ body.dark .site-header.scrolled {
   padding: 1.2rem 1.3rem;
 }
 
+.role-blocks {
+  display: grid;
+}
+
+.role-block {
+  position: relative;
+  margin-left: 0.25rem;
+  padding: 0 0 1.2rem 1.15rem;
+  border-left: 1px solid var(--border);
+}
+
+.role-block:last-child {
+  padding-bottom: 0;
+  border-left-color: transparent;
+}
+
+.role-block + .role-block {
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--border);
+}
+
+.role-block::before {
+  position: absolute;
+  top: 0.4rem;
+  left: -0.3rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 2px solid var(--panel);
+  border-radius: 50%;
+  background: var(--accent);
+  content: "";
+}
+
+.role-block + .role-block::before {
+  top: 1.5rem;
+}
+
 .role {
   margin: 0 0 0.6rem;
   font-weight: 600;
@@ -442,7 +495,7 @@ body.dark .site-header.scrolled {
 }
 
 .role-note {
-  margin: 0;
+  margin: 0 0 0.55rem;
   color: var(--muted);
   font-size: 0.9rem;
 }
