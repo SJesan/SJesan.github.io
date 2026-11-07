@@ -153,7 +153,7 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
 
 const typingText = document.querySelector('.typing-text');
 if (typingText) {
-  const phrases = ['CSE Student', 'Web Developer', 'AI/ML Learner'];
+  const phrases = ['Web Developer', 'AI/ML Learner', 'Researcher'];
   let phraseIndex = 0;
   let charIndex = 0;
   let deleting = false;
