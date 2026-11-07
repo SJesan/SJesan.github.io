@@ -34,15 +34,54 @@ window.addEventListener('load', () => {
 });
 
 const header = document.querySelector('.site-header');
+const backToTop = document.querySelector('.back-to-top');
 const navLinks = [...document.querySelectorAll('.nav-link')];
 
 const updateHeaderState = () => {
-  if (!header) return;
-  header.classList.toggle('scrolled', window.scrollY > 12);
+  if (header) {
+    header.classList.toggle('scrolled', window.scrollY > 12);
+  }
+  if (backToTop) {
+    const visible = window.scrollY > 420;
+    backToTop.classList.toggle('visible', visible);
+    backToTop.setAttribute('aria-hidden', String(!visible));
+    backToTop.tabIndex = visible ? 0 : -1;
+  }
 };
 
 window.addEventListener('scroll', updateHeaderState, { passive: true });
 updateHeaderState();
+
+if (backToTop) {
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion ? 'auto' : 'smooth',
+    });
+  });
+}
+
+const copyEmailButton = document.querySelector('.copy-email');
+if (copyEmailButton) {
+  const copyStatus = copyEmailButton.querySelector('.copy-status');
+  copyEmailButton.addEventListener('click', async () => {
+    if (!navigator.clipboard || !copyStatus) {
+      if (copyStatus) copyStatus.textContent = 'Clipboard unavailable';
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(copyEmailButton.dataset.email || '');
+      copyStatus.textContent = 'Copied!';
+      window.setTimeout(() => {
+        copyStatus.textContent = '';
+      }, 1800);
+    } catch (error) {
+      copyStatus.textContent = 'Copy failed';
+      console.error('Unable to copy email address to clipboard.', error);
+    }
+  });
+}
 
 const sections = [...document.querySelectorAll('section[id]')];
 const sectionObserver = new IntersectionObserver(

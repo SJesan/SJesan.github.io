@@ -3,18 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jesan | Portfolio</title>
+    <title>M. M. Sadikul Islam Jesan | Portfolio</title>
     <meta
       name="description"
-      content="Jesan is a final-semester Computer Science and Engineering student from IIUC, Bangladesh, focused on web development and AI/ML engineering."
+      content="M. M. Sadikul Islam Jesan is a final-semester Computer Science and Engineering student from IIUC, Bangladesh, focused on web development and AI/ML engineering."
     />
-    <meta property="og:title" content="Jesan | Portfolio" />
+    <meta property="og:title" content="M. M. Sadikul Islam Jesan | Portfolio" />
     <meta
       property="og:description"
-      content="Portfolio website for Jesan, a CSE student and aspiring AI/ML engineer."
+      content="Portfolio website for M. M. Sadikul Islam Jesan, a CSE student and aspiring AI/ML engineer."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="assets/profile.jpg" />
+    <meta property="og:image" content="https://sadikuljesan.me/assets/profile.jpg" />
+    <meta property="og:url" content="https://sadikuljesan.me/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -26,7 +29,10 @@
   <body>
     <header class="site-header">
       <div class="container nav-wrap">
-        <a class="brand" href="#hero" aria-label="Jesan home">Jesan</a>
+        <a class="brand" href="#hero" aria-label="M. M. Sadikul Islam Jesan home">
+          <span class="brand-full">M. M. Sadikul Islam <span class="highlight">Jesan</span></span>
+          <span class="brand-short" aria-hidden="true">M. M. S. I. <span class="highlight">Jesan</span></span>
+        </a>
         <nav class="site-nav" aria-label="Main navigation">
           <a class="nav-link" href="#about">About</a>
           <a class="nav-link" href="#experience">Experience</a>
@@ -49,17 +55,18 @@
         <div class="container hero-grid">
           <div class="hero-copy reveal">
             <p class="eyebrow">Computer Science and Engineering Student</p>
-            <h1 class="hero-name">Hi, I’m Jesan.</h1>
+            <h1 class="hero-name">Hi, I'm M. M. Sadikul Islam <span class="highlight">Jesan</span>.</h1>
             <p class="intro">
               I build web experiences and move toward AI/ML engineering with a focus on
               practical problem solving and clean, useful products.
             </p>
+            <p class="opportunity-note">Open to AI/ML internship opportunities.</p>
             <p class="tagline" aria-live="polite">
               <span class="typing-text"></span>
             </p>
             <div class="hero-actions">
               <a class="button primary" href="#projects">View projects</a>
-              <a class="button secondary" href="assets/cv.pdf" target="_blank" rel="noreferrer">Download CV</a>
+              <a class="button secondary" href="https://sadikuljesan.me/assets/cv.pdf" target="_blank" rel="noreferrer">Download CV</a>
             </div>
             <ul class="social-links" aria-label="Social media links">
               <li><a href="https://github.com/SJesan" target="_blank" rel="noreferrer">GitHub</a></li>
@@ -71,7 +78,7 @@
 
           <div class="hero-visual">
             <div class="photo-frame">
-              <img src="assets/profile.jpg" alt="Portrait of Jesan" />
+              <img src="assets/profile.jpg" alt="Portrait of M. M. Sadikul Islam Jesan" />
             </div>
           </div>
         </div>
@@ -87,7 +94,8 @@
           <div class="about-grid reveal">
             <div>
               <p>
-                I’m Sadikul Islam Jesan, known as Jesan. I’m a final-semester CSE student at
+                I’m M. M. Sadikul Islam <span class="highlight">Jesan</span>, known as
+                <span class="highlight">Jesan</span>. I’m a final-semester CSE student at
                 International Islamic University Chittagong, Bangladesh, and I’m based in
                 Chittagong.
               </p>
@@ -126,8 +134,17 @@
                 <h3>IIUC Computer Club</h3>
                 <p class="role">Assistant Office Secretary</p>
                 <ul>
-                  <li>Handle office work, records, and communication.</li>
+                  <li>Compile club records and activity reports, and handle office communication.</li>
                 </ul>
+              </div>
+            </article>
+
+            <article class="timeline-item reveal-card">
+              <div class="timeline-bullet" aria-hidden="true"></div>
+              <div class="timeline-content">
+                <h3>IIUC Computer Club</h3>
+                <p class="role">Assistant Research and Development Secretary</p>
+                <p class="role-note">Earlier role</p>
               </div>
             </article>
 
@@ -137,8 +154,17 @@
                 <h3>Nebulae-Soft</h3>
                 <p class="role">Campus Ambassador</p>
                 <ul>
-                  <li>Represent the company on campus and connect it with students.</li>
+                  <li>Represent Nebulae-Soft among IIUC students and connect them with the company.</li>
                 </ul>
+              </div>
+            </article>
+
+            <article class="timeline-item reveal-card">
+              <div class="timeline-bullet" aria-hidden="true"></div>
+              <div class="timeline-content">
+                <h3>Nebulae-Soft</h3>
+                <p class="role">Web Development Intern</p>
+                <p class="role-note">Earlier role</p>
               </div>
             </article>
 
@@ -160,7 +186,7 @@
                 <h3>GAOTek Inc.</h3>
                 <p class="role">Assistant Team Leader &amp; Intern Trainer</p>
                 <ul>
-                  <li>Support team coordination and training for interns.</li>
+                  <li>Coordinated a small team and trained new interns.</li>
                 </ul>
               </div>
             </article>
@@ -334,7 +360,10 @@
           </div>
 
           <div class="contact-box reveal-card">
-            <a href="mailto:sadikul.jesan@gmail.com">sadikul.jesan@gmail.com</a>
+            <button class="copy-email" type="button" data-email="sadikul.jesan@gmail.com" aria-label="Copy email address">
+              <span>sadikul.jesan@gmail.com</span>
+              <span class="copy-status" role="status" aria-live="polite"></span>
+            </button>
             <div class="contact-links">
               <a href="https://github.com/SJesan" target="_blank" rel="noreferrer">GitHub</a>
               <a href="https://linkedin.com/in/sadikul-islam-jesan" target="_blank" rel="noreferrer">LinkedIn</a>
@@ -348,10 +377,14 @@
 
     <footer class="site-footer">
       <div class="container footer-wrap">
-        <p>© <span id="year"></span> Jesan</p>
+        <p>© <span id="year"></span> M. M. Sadikul Islam <span class="highlight">Jesan</span></p>
         <a href="https://sadikuljesan.me" target="_blank" rel="noreferrer">sadikuljesan.me</a>
       </div>
     </footer>
+
+    <button class="back-to-top" type="button" aria-label="Back to top" aria-hidden="true" tabindex="-1">
+      <span aria-hidden="true">↑</span>
+    </button>
 
     <script src="script.js"></script>
   </body>
